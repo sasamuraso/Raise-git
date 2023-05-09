@@ -1,4 +1,4 @@
-## Lecture03 
+# Lecture03 
 
 ### Webアプリケーションのデプロイ
 ![app画面.png](./image/Lecture03/L3_l3app.png "app画面.png")
@@ -9,7 +9,7 @@
 
 ### APサーバー
 ____
-##### APサーバーのバージョン
+#### APサーバーのバージョン
 APサーバーはアプリケーションを動作させるためのサーバー。<br>
 本レクチャーではPumaを使用していた。<br>
 ```
@@ -18,7 +18,7 @@ APサーバーはアプリケーションを動作させるためのサーバー
  Puma version: 5.6.5 (ruby 3.1.2-p20) ("Birdie's Version")
 ```
 
-##### APサーバーの停止
+#### APサーバーの停止
 ```
 kill -9 <>
 ```
@@ -28,7 +28,7 @@ kill -9 <>
 
 ### DBサーバー
 _____
-##### DBサーバーのバージョン
+#### DBサーバーのバージョン
 DBサーバーはMyAQLを使用。入力されたデータを管理するシステム。
 ```
 mysql> status
@@ -39,7 +39,7 @@ Server version:         8.0.33 MySQL Community Server - GPL
 ```
 
 
-##### DBサーバー停止
+#### DBサーバー停止
 ```
 $ sudo service mysqld stop
 ```

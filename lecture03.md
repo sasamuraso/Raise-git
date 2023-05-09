@@ -46,7 +46,7 @@ $ sudo service mysqld stop
 MySQLサーバーのソケットファイルに接続できないとエラー表示<br>
 ![DB stop.png](./image/Lecture03/L3_DBstop.png "DB stop.png")
 
-**Puma、mysql共に再起動するとアプリケーションページは正常に表示される。**
+Puma、mysql共に再起動するとアプリケーションページは正常に表示される。
 
 
 ### Rails構成管理ツール

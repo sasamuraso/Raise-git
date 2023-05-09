@@ -8,7 +8,7 @@
 プレビュー画面で表示できないだけでブラウザで開いたらちゃんと起動できていた。Wow!
 
 ### APサーバーとDBサーバー
-・APサーバーはアプリケーションを動作させるためのサーバー。<br>
+**・APサーバーはアプリケーションを動作させるためのサーバー。**<br>
 本レクチャーではPumaを使用していた。<br>
 ```
  $ rails s
@@ -16,7 +16,8 @@
  Puma version: 5.6.5 (ruby 3.1.2-p20) ("Birdie's Version")
 ```
 
-・DBサーバーはMyAQLを使用している。入力されたデータを管理するシステム。
+
+**・DBサーバーはMyAQLを使用している。入力されたデータを管理するシステム。**
 ```
 mysql> status
 --------------
@@ -25,21 +26,23 @@ mysql  Ver 8.0.33 for Linux on x86_64 (MySQL Community Server - GPL)
 Server version:         8.0.33 MySQL Community Server - GPL
 ```
 
-・APサーバー停止
+
+**・APサーバー停止**
 ```
 kill -9 <>
 ```
 アプリケーションサーバーが動いていないため以下のメッセージが表示される。<br>
 [AP stop.png](./image/Lecture03/L3_APstop.png "APstop.png")
 
-・DBサーバー停止
+
+**・DBサーバー停止**
 ```
 $ sudo service mysqld stop
 ```
 MySQLサーバーのソケットファイルに接続できないとエラー表示<br>
 [DB stop.png](./image/Lecture03/L3_DBstop.png "DB stop.png")
 
-・Puma、mysql共に再起動するとアプリケーションページは正常に表示される。
+**・Puma、mysql共に再起動するとアプリケーションページは正常に表示される。**
 
 ### Rails構成管理ツール
 今回使用したのはBundler<br>

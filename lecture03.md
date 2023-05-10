@@ -10,8 +10,7 @@
 ### APサーバー
 ____
 #### APサーバーのバージョン
-APサーバーはアプリケーションを動作させるためのサーバー。<br>
-本レクチャーではPumaを使用していた。<br>
+APサーバーはアプリケーションを動作させるためのサーバー。本レクチャーではPumaを使用していた。
 ```
  $ rails s
  
@@ -57,20 +56,20 @@ ___
 
 ### Lecture03まとめ
 ___
-**・Ruby Webアプリケーションのデプロイの流れ**<br>
-1. アプリの指定するバージョンのRubyとBundlerとyarn(or npm)のインストール<br>
-2. DBサーバーをたてる<br>
-3. bundlerで必要なGemをインストール<br>
-4. bin/devでアプリケーション起動<br>
++ Ruby Webアプリケーションのデプロイの流れ
+  + アプリの指定するバージョンのRubyとBundlerとyarn(or npm)のインストール
+  + DBサーバーをたてる
+  + bundlerで必要なGemをインストール
+  + bin/devでアプリケーション起動
 
-**・bin/dev**<br>
++ bin/dev<br>
 binには起動時やメンテ時に必要なコマンドが格納されている<br>
 devには railsアプリを起動するためのシェルスクリプトが記述されている<br>
   
-**・bundle exec rails db:create**<br>
-Gemfileに記述された環境でデータベースを作成する<br>
++ bundle exec rails db:create<br>
+Gemfileに記述された環境でデータベースを作成する
  
-**・Gemfile**：Gemの依存関係を記述したもの<br>
-**・foreman**：Pricfileに記述されたコマンドを同時に実行できる。アプリ開発でよく使われる。<br>
-**・yarn**：javascriptのパッケージマネージャー≒npm　どちらを使うかはアプリケーション次第<br>
-**・Cloud9のプレビューではアプリは表示されない**
++ Gemfile：Gemの依存関係を記述したもの
++ foreman：Pricfileに記述されたコマンドを同時に実行できる。アプリ開発でよく使われる。
++ yarn：javascriptのパッケージマネージャー≒npm　どちらを使うかはアプリケーション次第
++ Cloud9のプレビューではアプリは表示されない

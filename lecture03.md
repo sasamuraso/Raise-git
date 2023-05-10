@@ -9,7 +9,7 @@
 
 ### APサーバー
 ____
-#### APサーバーのバージョン
++ APサーバーのバージョン
 APサーバーはアプリケーションを動作させるためのサーバー。本レクチャーではPumaを使用していた。
 ```
  $ rails s
@@ -17,7 +17,7 @@ APサーバーはアプリケーションを動作させるためのサーバー
  Puma version: 5.6.5 (ruby 3.1.2-p20) ("Birdie's Version")
 ```
 
-#### APサーバーの停止
++ APサーバーの停止
 ```
 kill -9 <>
 ```
@@ -27,7 +27,7 @@ kill -9 <>
 
 ### DBサーバー
 _____
-#### DBサーバーのバージョン
++ DBサーバーのバージョン
 DBサーバーはMyAQLを使用。入力されたデータを管理するシステム。
 ```
 mysql> status
@@ -38,14 +38,14 @@ Server version:         8.0.33 MySQL Community Server - GPL
 ```
 
 
-#### DBサーバー停止
++ DBサーバー停止
 ```
 $ sudo service mysqld stop
 ```
 MySQLサーバーのソケットファイルに接続できないとエラー表示<br>
 ![DB stop.png](./image/Lecture03/L3_DBstop.png "DB stop.png")
 
-Puma、mysql共に再起動するとアプリケーションページは正常に表示される。
+Puma、MySQL共に再起動するとアプリケーションページは正常に表示される。
 
 
 ### Rails構成管理ツール
@@ -57,14 +57,14 @@ ___
 ### Lecture03まとめ
 ___
 + Ruby Webアプリケーションのデプロイの流れ
-  + アプリの指定するバージョンのRubyとBundlerとyarn(or npm)のインストール
-  + DBサーバーをたてる
-  + bundlerで必要なGemをインストール
-  + bin/devでアプリケーション起動
+  1. アプリの指定するバージョンのRubyとBundlerとyarn(or npm)のインストール  
+  2. DBサーバーをたてる  
+  3. bundlerで必要なGemをインストール  
+  4. bin/devでアプリケーション起動   
 
 + bin/dev<br>
-binには起動時やメンテ時に必要なコマンドが格納されている<br>
-devには railsアプリを起動するためのシェルスクリプトが記述されている<br>
+binには起動時やメンテ時に必要なコマンドが格納されている。
+devには railsアプリを起動するためのシェルスクリプトが記述されている。
   
 + bundle exec rails db:create<br>
 Gemfileに記述された環境でデータベースを作成する

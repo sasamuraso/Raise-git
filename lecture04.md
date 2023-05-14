@@ -6,12 +6,11 @@
 IPv4 CIDRブロックに使用したいIPアドレスをCIDR表記で記入。
 172.16.1.0/24で作成した。
 <img src="image/Lecture04/VPC.png" width="70%" />
-![作成したVPC](./image/Lecture04/VPC.png "VPC" width="50%")
 
 
 + サブネット  
 パブリックサブネットを1aと1cのAZに作成。同様にプライベートサブネットも1aと1cのAZに作成した。合計４個のサブネットを作成。
-![サブネット](./image/Lecture04/subnet.png "subnet")
+<img src="image/Lecture04/subnet.png" width="70%" />
 
 
 + インターネットゲートウェイ  
@@ -31,7 +30,7 @@ IPv4 CIDRブロックに使用したいIPアドレスをCIDR表記で記入。
 +  パブリックサブネットに作成
 +  自動割り当てパブリックIPアドレスを有効
 +  SSHとHTTP用のポートを開けたセキュリティグループを使用
-![SG-EC2](./image/Lecture04/securitygroup-ec2.png "SG-EC2")
+<img src="image/Lecture04/securitygroup-ec2.png" width="70%" />
 
 
 +  MySQLインストール
@@ -43,7 +42,7 @@ $ sudo yum install mysql mysql-devel
 
 
 + 作成したEC2インスタンス
-![EC2 Instance](./image/Lecture04/ec2instance.png "EC2-Instance")
+<img src="image/Lecture04/ec2instance.png" width="70%" />
 
 ### RDS
 ----
@@ -60,10 +59,10 @@ VPCで作成した1aと1cのプライベートサブネットを使用。
 
 
 + 作成したRDS DBインスタンス
-![DB-instance](./image/Lecture04/DB-instance.png "DB-instance")
+<img src="image/Lecture04/DB-instance.png" width="70%" />
 
 
 
 ### EC2とRDSの接続
 ----
-![EC2MySQL](./image/Lecture04/EC2mysql-connect.png "EC2MySQL")
+<img src="image/Lecture04/EC2mysql-connect.png" width="70%" />

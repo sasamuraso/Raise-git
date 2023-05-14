@@ -5,7 +5,7 @@
 + VPC作成  
 IPv4 CIDRブロックに使用したいIPアドレスをCIDR表記で記入。
 172.16.1.0/24で作成した。
-![作成したVPC](./image/Lecture04/VPC.png "VPC" width="10")
+![作成したVPC](./image/Lecture04/VPC.png "VPC" width="50px")
 
 
 + サブネット  

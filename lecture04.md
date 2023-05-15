@@ -5,12 +5,12 @@
 + VPC作成  
 IPv4 CIDRブロックに使用したいIPアドレスをCIDR表記で記入。
 172.16.1.0/24で作成した。
-<img src="image/Lecture04/VPC.png" width="700" />
+![VPC](./image/Lecture04/VPC.png "VPC")
 
 
 + サブネット  
 パブリックサブネットを1aと1cのAZに作成。同様にプライベートサブネットも1aと1cのAZに作成した。合計４個のサブネットを作成。
-<img src="image/Lecture04/subnet.png" width="70%" />
+![subnet](./image/Lecture04/subnet.png "subnet")
 
 
 + インターネットゲートウェイ  
@@ -25,12 +25,12 @@ IPv4 CIDRブロックに使用したいIPアドレスをCIDR表記で記入。
 
 ### EC2インスタンス
 ----
-+ OSはAmazon Linux 2023
++ AMIはAmazon Linux 2023
 + インスタンスタイプはt2.micro
 +  パブリックサブネットに作成
 +  自動割り当てパブリックIPアドレスを有効
 +  SSHとHTTP用のポートを開けたセキュリティグループを使用
-<img src="image/Lecture04/securitygroup-ec2.png" width="70%" />
+![sg-ec2](./image/Lecture04/securitygroup-ec2.png  "sg-ec2")
 
 
 +  MySQLインストール
@@ -42,7 +42,7 @@ $ sudo yum install mysql mysql-devel
 
 
 + 作成したEC2インスタンス
-<img src="image/Lecture04/ec2instance.png" width="70%" />
+![instance](./image/Lecture04/ec2instance.png " instance")
 
 ### RDS
 ----
@@ -59,10 +59,10 @@ VPCで作成した1aと1cのプライベートサブネットを使用。
 
 
 + 作成したRDS DBインスタンス
-<img src="image/Lecture04/DB-instance.png" width="70%" />
+![DBinstance](./image/Lecture04/DB-instance.png " DBinstance")
 
 
 
 ### EC2とRDSの接続
 ----
-<img src="image/Lecture04/EC2mysql-connect.png" width="70%" />
+![EC2-RDS](./image/Lecture04/EC2mysql-connect.png " EC2-RDS")

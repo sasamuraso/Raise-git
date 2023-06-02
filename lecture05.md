@@ -27,7 +27,8 @@ $ git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-
 $ rbenv install 3.1.2
 $ rbenv global 3.1.2
 ```
-
+  
+    
 ### bundle install
 ---
 bundle 2.3.14とyarn 1.22.19インストール
@@ -52,8 +53,10 @@ $ sudo yum install -y gcc gcc-c++ make
 $ bundle install
 
 ```
-
+  
+    
 ### RDS for MySQL接続
+---
 database.yml書き換え
 ```
 default: 
@@ -67,8 +70,10 @@ DB作成
 $ bundle exec rails db:create
 $ bundle exec rails db:migrate
 ```
-
+  
+    
 ### ローカル環境でアプリ起動
+---
 `$ bin/dev`実行もエラー  
 webpackなんてありませんとのエラー  
 webpack、webpack-cliインストールで解決
@@ -77,11 +82,13 @@ $ npm install webpack webpack-cli
 ```
 アプリ起動成功。
 SQLへの書き込みも成功。
-
+  
+    
 ### NGINX + Pumaでデプロイ
+---
 NGINXインストール
 ```
-sudo amazon-linux-extras install nginx1
+$ sudo amazon-linux-extras install nginx1
 ```
 
 /etc/nginx/conf.d/app.confを作成し、設定を書き込み  
@@ -123,11 +130,11 @@ server {
   error_page 500 502 503 504 /500.html;
 }
 ```
-IPアドレス打ち込んでページ表示確認
-
-
+ブラウザにIPアドレス打ち込んでページ表示確認
+  
+  
 ### NGINX + Unicornでデプロイ
-Gemfileで記載済みのためインストール不要
+Gemfileで記載済みのためインストール不要  
 前項で作成したnginxの設定ファイルをunocorn用に書き換え
 ```
 # app.conf
@@ -182,10 +189,10 @@ nginxのエラーログに以下の記載あり
 4467#4467: *46 stat() "/home/ec2-user/raisetech-live8-sample-app/public/500.html" failed (13: Permission denied), client: 139.162.84.205, server: 18.179.8.173, request: "GET / HTTP/1.0", upstream: "http://unix:/home/ec2-user/raisetech-live8-sample-app/unicorn.sock/"
 4467#4467: *46 connect() to unix:/home/ec2-user/raisetech-live8-sample-app/unicorn.sock failed (13: Permission denied) while connecting to upstream, client: 139.162.84.205, server: 18.179.8.173, request: "GET / HTTP/1.0", upstream: "http://unix:/home/ec2-user/raisetech-live8-sample-app/unicorn.sock:/500.html"
 ```
-UnicornとNGINXの実行者が同じである必要がある様子
+UnicornとNGINXの実行者が同じである必要である様子  
 `/etc/nginx/nginx.conf`内のuserをec2-userへ変更
 + ページは表示されたがCSSとJSが効いていない  
-![cssjs](./image/Lecture05/CSS_JS.png "CSS")
+![cssjs](./image/Lecture05/CSS_JS.png "CSS")  
 nginx.error.logファイルにはapplication.debug-xxxxx.cssや.jsがありませんよというメッセージ
 ```
 # nginx.error.log
@@ -197,10 +204,10 @@ nginx.error.logファイルにはapplication.debug-xxxxx.cssや.jsがありま�
 ブラウザから元のcssファイルなどを辿って検証するために、デバッグファイルを作成して、アクセスするようにする設定のため？
 
 + アプリにアップロードした画像が表示されない  
-アプリページのソースを表示して、画像のURLをクリックすると以下のページが出てきた
+ページのソースを表示して、画像のURLをクリックすると以下のページが出てきた
 ![imagemagick](./image/Lecture05/imagemagick_error.png)
-ImageMagickをインストールして解決
-
+ImageMagickをインストールして解決  
+  
 
 ### ELB追加
 ---
@@ -212,15 +219,16 @@ ImageMagickをインストールして解決
 ![healthcheck](./image/Lecture05/target_group.png)
 ALBのDNSから1a,1cインスタンス共にアクセス成功  
 ![access](./image/Lecture05/access_DNS.png)
-
-
+  
+  
 ### S3追加
+---
 アップロードした画像保存用に使用
 + IAMユーザー作成  
-S3用のIAMユーザーを作成し、AmazonS3FullAccessをアタッチ。  
-アクセスキーとシークレットキーをダウンロードを保存しておく。  
-パブリックアクセスを全てブロックする設定でS3バケットを作成。  
-S3用のIAMユーザーのコンソールアクセスを無効に設定。  
+S3用のIAMユーザーを作成し、AmazonS3FullAccessをアタッチ  
+アクセスキーとシークレットキーをダウンロードを保存しておく  
+パブリックアクセスを全てブロックする設定でS3バケットを作成  
+S3用のIAMユーザーのコンソールアクセスを無効に設定  
 
 + aws-sdk-s3インストール  
 Gemfileで`gem "aws-sdk-s3", require: false`を確認
@@ -247,7 +255,7 @@ aws:
 + アプリからS3にアップロードされたファイルを確認
 ![S3](./image/Lecture05/S3.png)
 
-
-
+  
+  
 ## 構成図
 ![architecture](./image/Lecture05/raisetech-sample-app.drawio%20(1).png)

@@ -69,14 +69,14 @@ $ bundle exec rails db:migrate
 ```
 
 ### ローカル環境でアプリ起動
-`$ bin/dev`実行もエラー
-webpackなんてありませんとのエラー
+`$ bin/dev`実行もエラー  
+webpackなんてありませんとのエラー  
 webpack、webpack-cliインストールで解決
 ```
 $ npm install webpack webpack-cli
 ```
-アプリ起動成功
-SQLへの書き込みも成功
+アプリ起動成功。
+SQLへの書き込みも成功。
 
 ### NGINX + Pumaでデプロイ
 NGINXインストール
@@ -84,8 +84,8 @@ NGINXインストール
 sudo amazon-linux-extras install nginx1
 ```
 
-/etc/nginx/conf.d/app.confを作成し、設定を書き込み
-/etc/nginx/nginc.confの重複部分をコメントアウト
+/etc/nginx/conf.d/app.confを作成し、設定を書き込み  
+/etc/nginx/nginc.confの重複部分をコメントアウト  
 ```
 # app.conf
 #サーバーグループ「test-app」を定義

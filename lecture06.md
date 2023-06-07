@@ -68,6 +68,7 @@ https://calculator.aws/#/estimate?sc_channel=cfm-blog&sc_campaign=la-get-cost-es
 試しで有料のインスタンスタイプを作成したため、5月分は$0.08だった  
 ![invoice](./image/Lecture06/invoice.png)  
 
-+ 無料利用枠
++ 無料利用枠  
 6月始まったばかりなのでまだ無料枠だが、EC2/RDSを立ち上げたままだとオーバー  
+ELBが伏兵だった。停止できないので複数作成すると無料枠が超えてしまう。長い間使わないものは削除して、使用時に再作成したほうがいい。
 ![free_tier](./image/Lecture06/free_tier.png)

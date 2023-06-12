@@ -30,6 +30,6 @@ aws ec2 authorize-security-group-ingress --group-id $MYSECURITYGROUP --protocol 
 #aws ec2 revoke-security-group-ingress --group-id $MYSECURITYGROUP --protocol tcp --port 22 --cidr $MYIP/32
 ```
 
-4. **感想**
+4. **感想**  
  セキュリティ対策をやりすぎてもコストがかかるし、逆に足りない場合はインシデントが起きるリスクが上がるため、非常にバランスが難しいと感じた。  
  まずは身近なIAMポリシーからしっかり学んでいきたい。

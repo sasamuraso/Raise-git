@@ -8,7 +8,7 @@
 6. [ELB](#6-elb)
 7. [S3](#7-s3)
 8. [Stack生成](#8-stack生成)
-9. [SecretsManagerに保管したDBパスワードの管理](#9-secretsmanagerに保管したdbパスワードの管理)
+9. [SecretsManagerに保管したDBパスワードの管理](#9-secretsmanager内のdbパスワードの取り出し)
 10. [感想](#10-感想)
 
 ## 1. CloudFormation
@@ -185,8 +185,7 @@ IGWはリソースタイプで定義するだけ。
 
 次にルートを定義する。パブリックはインターネットに出ていくために`DestinationCidrBlock`で0.0.0.0を指定し、宛先としてIGWを指定する。プライベート間の指定は不要。
 
-最後にサブネットと紐付ける。紐付けは一つの定義ではできないので、複数ある場合は複数個作成する必要あり。
-紐付けしなかったサブネットは自動でメインルートテーブルが作成され、ローカルだけ通信可能。
+最後にPublicSubnetAssociationでサブネットと紐付ける。一つの定義で複数の紐付けはできないので、サブネットの数だけ作成する必要あり。
 ```yaml
 # Route Table ------
   PublicRouteTable:
@@ -219,7 +218,7 @@ IGWはリソースタイプで定義するだけ。
 
 ## 4. EC2
 ---
-- キーペア
+- キーペア  
 SSH用に作成。
 デフォルトはRSAタイプ。ED25519に変更したい場合は指定必要。
 作成されたキーペアはSSMのパラメータストアに保管されており、値はパラメータストアから確認可能。
@@ -231,7 +230,7 @@ SSH用に作成。
       KeyName: KeyPair20230612
 ```
 
-- セキュリティグループ
+- セキュリティグループ  
 EC2用のSGを作成。SSHとHTTPを開放。
 
 ```yaml
@@ -264,7 +263,7 @@ ImageId：AMIのIDを指定
 
 Monitoring：詳細なモニタリングを有効にするか
 
-NetworkInterfaces：パブリックIPを有効にする設定。DeviceIndexはENIを付与する順番？
+NetworkInterfaces：パブリックIPを有効にする設定。
 サブネットとSGはこの設定のなかに記述する。
 
 BlockDeviceMapping：EBSの設定。DeleteOnTerminationのデフォルトはTrue。
@@ -296,8 +295,8 @@ UserData：インスタンスを立ち上げた後に一回だけ実行される
         #!/bin/bash -ex
         yum update -y
         yum install -y git
-		amazon-linux-extras install -y nginx1
-		systemctl start nginx
+        amazon-linux-extras install -y nginx1
+        systemctl start nginx
       Tags:
         - Key: Name
           Value: !Sub EC2Instance1-${Namebase}
@@ -328,8 +327,8 @@ UserData：インスタンスを立ち上げた後に一回だけ実行される
         #!/bin/bash -ex
         yum update -y
         yum install -y git
-		amazon-linux-extras install -y nginx1
-		systemctl start nginx
+        amazon-linux-extras install -y nginx1
+        systemctl start nginx
       Tags:
         - Key: Name
           Value: !Sub EC2Instance2-${Namebase}
@@ -340,7 +339,7 @@ UserData：インスタンスを立ち上げた後に一回だけ実行される
 ## 5. RDS
 ---
 - RDSセキュリティグループ  
-EC2に設定したSGをソースに指定
+EC2のSGをソースに指定(SourceSecurityGroupId)
 ```yaml
 RDSSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -392,7 +391,7 @@ RdsDBInstance:
     Type: AWS::RDS::DBInstance
     Properties:
       AllocatedStorage: 20
-			MaxAllocatedStorage: 0
+      MaxAllocatedStorage: 20
       DBInstanceClass: db.t3.micro
       AllowMajorVersionUpgrade: false
       AutoMinorVersionUpgrade: true
@@ -423,7 +422,8 @@ RdsDBInstance:
 
 ## 6. ELB
 ---
-- ELBセキュリティグループ作成
+- ELBセキュリティグループ作成  
+80番ポートを解放
 
 ```yaml
 # ELB Security Group -------------------------------------
@@ -449,7 +449,7 @@ RdsDBInstance:
 | ---                                    | ---                         |
 | Matcher                                | ステータスコードの設定。HTTPステータスコードの200番台はリクエストが正常に処理されたことを示す。 |
 | TargetGroupAttributes                  | ターゲット属性の設定           |
-| - deregistration_delay.timeout_seconds | ターゲットが登録解除（オフラインなど）された後、リクエストの転送停止までの時間設定。一時的なオフラインであればリクエストを送り続ける。 |
+| - deregistration_delay.timeout_seconds | ターゲットがオフラインになった時にELBが登録解除するまでの待機時間。 |
 | スティッキーセッション                     | セッションが切れるまでは同じクライアントからのアクセスは同じサーバーへ誘導する機能 |
 
 ```yaml
@@ -481,10 +481,6 @@ RdsDBInstance:
           Value: 300
         - Key: stickiness.enabled
           Value: false
-#        - Key: stickiness.type
-#          Value: load_balancer
-#        - Key: stickiness.lb_cookie.duration_seconds
-#          Value: 3600
       Targets: 
         - Id: !Ref EC2Instance1
           Port: 80
@@ -576,12 +572,41 @@ SubnetMapping：固定IPを使用する際はこちらを使う
 Stack生成成功。
 ![Stack](./image/Lecture10/Lecture10.png)
 
-## 9. SecretsManagerに保管したDBパスワードの管理
+## 9. SecretsManager内のDBパスワードの取り出し
 ---
+Railsアプリのconfig/Initializers内に、SecretsManagerから取り出したPWを環境変数にするためのコードを作成。
+```
+# config/initializers/sample.rb
 
+require 'aws-sdk-secretsmanager'
+
+# SecretsManagerから新しいパスワードを取得
+secrets_manager_client = Aws::SecretsManager::Client.new(region: 'ap-northeast-1')
+secret = secrets_manager_client.get_secret_value(secret_id: 'rds!db-b0172658-b897-4b24-9575-d5b1c27c3354')
+secret_value = JSON.parse(secret.secret_string)
+new_password = secret_value['password']
+
+# パスワードを環境変数に設定
+ENV['RDS_PASSWORD'] = new_password
+```  
+  
+Database .ymlに反映
+```
+# config/database.yml
+
+default: &default
+  adapter: mysql2
+  encoding: utf8mb4
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: admin
+  password: <%= ENV['RDS_PASSWORD'] %>
+  host: RDSエンドポイント
+```
+  
+アプリ起動中にSecretsManagerのPWが変更されても、環境変数も自動で反映されることも確認できた。  
 
 ## 10. 感想
 ---
 全てのリソースを一つのテンプレートで作成してしまった。次回は構成を意識する。
-一つのリソースで設定できる項目が多く、一つ一つの説明を理解するのに苦労した。
+一つのリソースで設定できる項目が多く、一つ一つの説明を理解するのに苦労した。　　
 

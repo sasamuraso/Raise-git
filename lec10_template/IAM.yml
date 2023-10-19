@@ -1,0 +1,68 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: 'IAM Policy test'
+
+#-------------------------------------------------------------
+# Parameters
+#-------------------------------------------------------------
+#Parameters: 
+#  Namebase:
+#    Description: base name
+#    Type: String
+#    Default: raisetech-demo         
+
+Resources:
+# S3 policy ---------------------------------------------------
+  S3ReadWritePolicy:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyName: S3ReadWritePolicy # コンソールで表示されるポリシー名
+      PolicyDocument: # ポリシーのアクセス設定を記入する
+        Version: '2012-10-17' # 固定？
+        Statement: # ポリシーを
+          - Effect: Allow # Allowで許可、Denyで拒否
+            Action: # 許可もしくは拒否されるアクションを指定
+              - 's3:GetObject'
+              - 's3:PutObject'
+            Resource: !Sub # アクション対象のリソースのARNを記入、全てを対象にする場合は'*'
+              - arn:aws:s3:::${BucketName}/*
+              - BucketName: !ImportValue S3BucketName
+      Roles: # アタッチするロールを指定
+        - !Ref EC2Role
+
+# SecretsManager Policy ------------------------------------------
+  SecretsManagerReadPolicy:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyName: SecretsManagerReadPolicy
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action: 'secretsmanager:GetSecretValue'
+            Resource: '*'
+      Roles:
+        - !Ref EC2Role
+
+# Role ----------------------------------------------
+  EC2Role:
+    Type: AWS::IAM::Role
+    Properties:
+      Description: "S3 Upload & Read, SecretsManager Read"
+      RoleName: S3-SecretsManager-Access-for-EC2 # IAMロール名を設定
+      AssumeRolePolicyDocument: # AssumeRoleするための設定
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow # AssumeRoleアクションを許可します
+            Principal:
+              Service: ec2.amazonaws.com # EC2がロールを引き受ける設定
+            Action: 'sts:AssumeRole' # STSでAssumeRoleしますよという宣言
+      Path: "/"
+
+# ----------------------------------------------------------
+# Outputs
+# ----------------------------------------------------------
+Outputs:
+  EC2Output:
+    Value: !Ref EC2Role
+    Export: 
+      Name: EC2Role
